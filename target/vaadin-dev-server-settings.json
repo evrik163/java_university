@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "/home/pavel/codeprojec/unik/./frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "/home/pavel/codeprojec/unik/./frontend/generated/jar-resources",
+  "staticOutput": "/home/pavel/codeprojec/unik/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "/home/pavel/codeprojec/unik/target/classes/META-INF/VAADIN/config",
+  "frontendBundleOutput": "/home/pavel/codeprojec/unik/target/classes/META-INF/VAADIN/webapp",
+  "devBundleOutput": "/home/pavel/codeprojec/unik/src/main/dev-bundle/webapp",
+  "devBundleStatsOutput": "/home/pavel/codeprojec/unik/src/main/dev-bundle/config",
+  "jarResourcesFolder": "/home/pavel/codeprojec/unik/./frontend/generated/jar-resources",
+  "themeName": "",
+  "clientServiceWorkerSource": "/home/pavel/codeprojec/unik/target/sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}
