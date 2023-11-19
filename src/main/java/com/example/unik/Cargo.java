@@ -22,47 +22,55 @@ public class Cargo{
   protected Cargo(){
   }
 
-  public void setCargoName(String cargo_name) {
+  public Long getId(){
+    return id;
+  };
+
+  public void setCargo_name(String cargo_name) {
     this.cargo_name = cargo_name;
   }
 
-  public String getCargoName() {
+  public String getCargo_name() {
     return cargo_name;
   }
 
-  public void setCargoContent(String cargo_content) {
+  public void setCargo_content(String cargo_content) {
     this.cargo_content = cargo_content;
   }
 
-  public String getCargoContent() {
+  public String getCargo_content() {
     return cargo_content; 
   }
 
-  public void setShipmentCity(String shipment_city) {
+  public void setShipment_city(String shipment_city) {
     this.shipment_city = shipment_city;
   }
 
-  public String getShipmentCity() {
+  public String getShipment_city() {
     return shipment_city; 
   }
 
-  public void setShipmentDate(LocalDate shipment_city) {
+  public void setShipment_date(LocalDate shipment_city) {
     this.shipment_date = shipment_date;
   }
 
-  public LocalDate getShipmentDate() {
+  public LocalDate getShipment_date() {
     return shipment_date; 
   }
 
-  public void setDeliveryCity(String delivery_city) {
+  public void setDelivery_city(String delivery_city) {
     this.delivery_city = delivery_city;
   }
 
-  public String getDeliveryCity(String delivery_city) {
+  public String getDelivery_city() {
     return delivery_city; 
   }
 
-  public void setDeliveryDate(LocalDate delivery_date) {
+  public void setDelivery_date(LocalDate delivery_date) {
     this.delivery_date = delivery_date;
+  }
+
+  public LocalDate getDelivery_date() {
+    return delivery_date; 
   }
 }

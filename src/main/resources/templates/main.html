@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>
+    Система поиска грузов
+    </title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="js/bootstrap.min.js"></script>
+  </head>
+    <body>
+    <div th:insert="~{navbar :: copy}"></div>
+
+  <div class="container vh-100 d-flex justify-content-start flex-column">
+      <form th:action="@{/}">
+    <div class="input-group my-5">
+          <input name="keyword" id="keyword" type="search" class="form-control rounded" placeholder="Поиск" aria-label="Search" aria-describedby="search-addon"  th:value"{keyword}" required/>
+      <button type="submit" class="btn btn-outline-primary">Найти</button>
+      </form>
+    </div>
+
+  <table class="table table-borderless">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Название груза</th>
+      <th scope="col">Содержимое груза</th>
+      <th scope="col">Город отправки</th>
+      <th scope="col">Дата отправки</th>
+      <th scope="col">Город доставки</th>
+      <th scope="col">Дата доставки</th>
+    </tr>
+  </thead>
+    <tbody>
+          <tr th:each="cargo: ${listCargo}">
+            <th scope="row" th:text="${cargo.id}">ID груза не найден</th>
+            <th scope="row" th:text="${cargo.cargo_name}">Название груза не найдено</th>
+            <th scope="row" th:text="${cargo.cargo_content}">Название груза не найдено</th>
+            <th scope="row" th:text="${cargo.shipment_city}">Город отправки груза не найден</th>
+            <th scope="row" th:text="${cargo.shipment_date}">Дата отправки груза не найдена</th>
+            <th scope="row" th:text="${cargo.delivery_city}">Город доставки груза не найден</th>
+            <th scope="row" th:text="${cargo.delivery_date}">Дата доставки груза не найдена</th>
+          <td>
+              <div style="word-spacing: 10px;">
+                  <a style="text-decoration: none;" th:href="@{'/edit/' +${cargo.id}}"<a>Редактировать</a> 
+                  <a style="text-decoration: none;" th:href="@{'/delete/' +${cargo.id}}"<a>Удалить</a> 
+              </div>
+          </td>
+          </tr>
+      </tbody>
+    </table>
+    <a th:href="@{'/new'}">
+      <button type="button" class="btn btn-primary">Добавить груз</button>
+    </a> 
+  </div>
+  </body>
+</html>

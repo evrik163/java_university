@@ -19,17 +19,12 @@ public class AppController {
       @Autowired
       private CargoService service;
 
-      @RequestMapping(path = "/test")
-       public String getTest() {
-          return "HURAAAAA";
-       } 
-
-      @RequestMapping(path = "/home")
+      @RequestMapping(path = "/")
       public String viewHomePage(Model model, @Param("keyword") String keyword) {
           List<Cargo> listCargo = service.listAll(keyword);
           model.addAttribute("listCargo", listCargo);
           model.addAttribute("keyword", keyword);
-          return "test";
+          return "main";
       }
 
       @RequestMapping(path = "/new")
