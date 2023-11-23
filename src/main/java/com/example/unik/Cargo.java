@@ -1,11 +1,12 @@
 package com.example.unik;
 
-import java.time.LocalDate;
+//import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.GenerationType;
+import java.sql.Date;
 
 @Entity
 public class Cargo{
@@ -15,9 +16,9 @@ public class Cargo{
   private String cargo_name;
   private String cargo_content;
   private String shipment_city;
-  private LocalDate shipment_date;
+  private Date shipment_date;
   private String delivery_city;
-  private LocalDate delivery_date;
+  private Date delivery_date;
 
   protected Cargo(){
   }
@@ -49,12 +50,12 @@ public class Cargo{
   public String getShipment_city() {
     return shipment_city; 
   }
-
-  public void setShipment_date(LocalDate shipment_city) {
+;
+  public void setShipment_date(Date shipment_date) {
     this.shipment_date = shipment_date;
   }
 
-  public LocalDate getShipment_date() {
+  public Date getShipment_date() {
     return shipment_date; 
   }
 
@@ -66,11 +67,11 @@ public class Cargo{
     return delivery_city; 
   }
 
-  public void setDelivery_date(LocalDate delivery_date) {
+  public void setDelivery_date(Date delivery_date) {
     this.delivery_date = delivery_date;
   }
 
-  public LocalDate getDelivery_date() {
+  public Date getDelivery_date() {
     return delivery_date; 
   }
 }

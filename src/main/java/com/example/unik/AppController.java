@@ -51,6 +51,6 @@ public class AppController {
       @RequestMapping("/delete/{id}")
       public String deleteCargo(@PathVariable(name="id") Long id) {
       service.delete(id);
-      return "/redirect:/";
+      return "redirect:/";
       }
   }

@@ -18,6 +18,7 @@ public class CargoService {
   }
 
   public void save(Cargo cargo) {
+    System.out.println(cargo);
     repo.save(cargo); 
   }
 
