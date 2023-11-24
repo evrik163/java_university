@@ -44,7 +44,7 @@ public class AppController {
       public ModelAndView showEditCargoForm(@PathVariable(name="id") Long id) {
        ModelAndView nav = new ModelAndView("edit_cargo");
        Cargo cargo = service.get(id);
-       nav.addObject("Cargo", cargo);
+       nav.addObject("cargo", cargo);
        return nav;
       }
 
