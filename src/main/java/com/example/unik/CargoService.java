@@ -1,6 +1,7 @@
 package com.example.unik;
 
 import java.util.List;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ public class CargoService {
   }
 
   public void save(Cargo cargo) {
-    System.out.println(cargo);
     repo.save(cargo); 
   }
 
@@ -28,6 +28,8 @@ public class CargoService {
 
   public void delete(Long id) {
     repo.deleteById(id);
-    
+  }
+  public List<Date> getDate(){
+    return repo.getDate();
   }
 }

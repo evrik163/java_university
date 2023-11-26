@@ -1,7 +1,12 @@
 package com.example.unik;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.sql.Date;
 
+import com.google.gson.Gson;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -52,5 +57,28 @@ public class AppController {
       public String deleteCargo(@PathVariable(name="id") Long id) {
       service.delete(id);
       return "redirect:/";
+      }
+
+      @RequestMapping(value = "/chart", method=RequestMethod.GET, produces="text/plain")
+      @ResponseBody
+      public String getChart() {
+        List<Date> listDates = service.getDate();
+        Map<Date, Integer> dict = new HashMap <Date, Integer> ();
+
+        for (int i = 0; i < listDates.size(); i++){
+          Date val = listDates.get(i);
+          boolean containsKey = dict.containsKey(val);
+          if (containsKey){
+            dict.put(val, dict.get(val) + 1);
+             }
+          else {
+            dict.put(val, 1);
+            }
+          }
+
+        Gson gson = new Gson(); 
+        String json = gson.toJson(dict);
+
+        return json;
       }
   }

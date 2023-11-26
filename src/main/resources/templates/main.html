@@ -50,6 +50,20 @@
     <a th:href="@{'/new'}">
       <button type="button" class="btn btn-primary">Добавить груз</button>
     </a> 
+    <a>
+      <button id="chartElem" type="button" class="btn btn-primary">Гистограмма</button>
+    <script>
+    document.getElementById('chartElem').onclick = function() { 
+    var ourRequest = new XMLHttpRequest();
+    ourRequest.open('GET', 'http://localhost:8080/chart')
+    ourRequest.onload = function() {
+      var ourData = JSON.parse(ourRequest.responseText);
+      console.log(ourData);
+      }
+    ourRequest.send();
+    };
+    </script>
+    </a> 
   </div>
   </body>
 </html>
