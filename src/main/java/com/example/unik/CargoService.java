@@ -29,7 +29,16 @@ public class CargoService {
   public void delete(Long id) {
     repo.deleteById(id);
   }
-  public List<Date> getDate(){
+
+  public List<String> getDate(){
     return repo.getDate();
+  }
+
+  public long getCount(){
+    return repo.getCount();
+  }
+
+  public List<String> getDelDate(){
+    return repo.getDelDate();
   }
 }

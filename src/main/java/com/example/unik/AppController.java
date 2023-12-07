@@ -29,6 +29,7 @@ public class AppController {
           List<Cargo> listCargo = service.listAll(keyword);
           model.addAttribute("listCargo", listCargo);
           model.addAttribute("keyword", keyword);
+          model.addAttribute("count", service.getCount());
           return "main";
       }
 
@@ -62,11 +63,12 @@ public class AppController {
       @RequestMapping(value = "/chart", method=RequestMethod.GET, produces="text/plain")
       @ResponseBody
       public String getChart() {
-        List<Date> listDates = service.getDate();
-        Map<Date, Integer> dict = new HashMap <Date, Integer> ();
+        List<String> listDates = service.getDate();
+        List<String> listDelDates = service.getDelDate();
+        Map<String, Integer> dict = new HashMap <String, Integer> ();
 
         for (int i = 0; i < listDates.size(); i++){
-          Date val = listDates.get(i);
+          String val = listDates.get(i) + "/" + listDelDates.get(i);
           boolean containsKey = dict.containsKey(val);
           if (containsKey){
             dict.put(val, dict.get(val) + 1);

@@ -1,22 +1,30 @@
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>
     Система поиска грузов
     </title>
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <script src="js/bootstrap.min.js"></script>
   </head>
     <body>
     <div th:insert="~{navbar :: copy}"></div>
-
   <div class="container vh-100 d-flex justify-content-start flex-column">
       <form th:action="@{/}">
-    <div class="input-group my-5">
+    <div class="input-group mt-3">
           <input name="keyword" id="keyword" type="search" class="form-control rounded" placeholder="Поиск" aria-label="Search" aria-describedby="search-addon"  th:value"{keyword}" required/>
       <button type="submit" class="btn btn-outline-primary">Найти</button>
-      </form>
     </div>
-
+     </form>
+    <div class="input-group mt-2">
+       <form th:action="@{/new}">
+          <button type="submit" class="btn btn-primary me-2">Добавить груз</button>
+       </form>
+        <div>
+          <button id="chartElem" type="button" class="btn btn-primary me-2">Гистограмма</button>
+        </div>
+        <div class="mt-2">
+          <p>Количество грузов: <span th:text="${count}"></span></p>
+        </div>
+    </div>
   <table class="table table-borderless">
   <thead>
     <tr>
@@ -47,23 +55,13 @@
           </tr>
       </tbody>
     </table>
-    <a th:href="@{'/new'}">
-      <button type="button" class="btn btn-primary">Добавить груз</button>
-    </a> 
-    <a>
-      <button id="chartElem" type="button" class="btn btn-primary">Гистограмма</button>
-    <script>
-    document.getElementById('chartElem').onclick = function() { 
-    var ourRequest = new XMLHttpRequest();
-    ourRequest.open('GET', 'http://localhost:8080/chart')
-    ourRequest.onload = function() {
-      var ourData = JSON.parse(ourRequest.responseText);
-      console.log(ourData);
-      }
-    ourRequest.send();
-    };
-    </script>
-    </a> 
+      <div>
+	<canvas id="myChart"></canvas>
+    </div>
   </div>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="js/hist.js"> </script>
   </body>
 </html>
