@@ -1,25 +1,23 @@
 document.getElementById('chartElem').onclick = function() { 
-let sortParam = document.getElementById('sorting').checked ? '&sorting=on' : ''
-let searchBarVal = document.getElementById('keyword').value
-let searchKey=  searchBarVal ? `${searchBarVal}` : ''
+let searchKey = localStorage.getItem("keyword")
 let ourRequest = new XMLHttpRequest();
-ourRequest.open('GET', `http://localhost:8080/chart?keyword=${searchKey}${sortParam}`)
+ourRequest.open('GET', `http://localhost:8080/chart?keyword=${searchKey}`)
 ourRequest.onload = function() {
-let ourData = JSON.parse(ourRequest.responseText);
-let dates = []
-let counts = []
-for (let key in ourData){
-dates.push(key)
-counts.push(ourData[key])
-}
-console.log(dates, counts);
-writeGraph(dates, counts)
+    let ourData = JSON.parse(ourRequest.responseText);
+    let dates = []
+    let counts = []
+    for (let key in ourData){
+          dates.push(key)
+          counts.push(ourData[key])
+    }
+    writeGraph(dates, counts)
+    localStorage.setItem("keyword", "")
 }
 ourRequest.send();
 function writeGraph(dates, counts){
 
-var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
+let ctx = document.getElementById('myChart').getContext('2d');
+    let myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: dates,

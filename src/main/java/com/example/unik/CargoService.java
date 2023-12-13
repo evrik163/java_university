@@ -43,7 +43,10 @@ public class CargoService {
     repo.deleteById(id);
   }
 
-  public List<String> getDate(){
+  public List<String> getDate(String keyword){
+    if (keyword != null){
+      return repo.getFilteredDate(keyword);
+    }
     return repo.getDate();
   }
 
@@ -54,8 +57,10 @@ public class CargoService {
     return repo.getAllCount();
   }
 
-  public List<String> getDelDate(){
+  public List<String> getDelDate(String keyword){
+    if (keyword != null){
+      return repo.getFilteredDelDate(keyword);
+    }
     return repo.getDelDate();
   }
-
 }

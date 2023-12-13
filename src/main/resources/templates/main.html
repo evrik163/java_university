@@ -11,7 +11,7 @@
       <form th:action="@{/}">
     <div class="input-group mt-3">
         <input name="keyword" id="keyword" type="search" class="form-control rounded" placeholder="Поиск" aria-label="Search" aria-describedby="search-addon"  th:value"{keyword}"/>
-      <button type="submit" class="btn btn-outline-primary rounded me-2">Найти</button>
+      <button type="submit" id="findButton" class="btn btn-outline-primary rounded me-2">Найти</button>
       <div class="form-check form-switch  pt-2">
         <input class="form-check-input" type="checkbox" id="sorting" name="sorting" th:value"true">
         <label class="form-check-label" for="sorting">Сортировать</label>
@@ -67,5 +67,6 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <script src="js/hist.js"> </script>
+    <script src="js/keyState.js"> </script>
   </body>
 </html>

@@ -63,11 +63,10 @@ public class AppController {
 
       @RequestMapping(value = "/chart", method=RequestMethod.GET, produces="text/plain")
       @ResponseBody
-      public String getChart(@Param("keyword") String keyword, @Param("sorting") String sorting) {
+      public String getChart(@Param("keyword") String keyword) {
         System.out.println(keyword);
-        System.out.println(sorting);
-        List<String> listDates = service.getDate();
-        List<String> listDelDates = service.getDelDate();
+        List<String> listDates = service.getDate(keyword);
+        List<String> listDelDates = service.getDelDate(keyword);
         Map<String, Integer> dict = new HashMap <String, Integer> ();
 
         for (int i = 0; i < listDates.size(); i++){
