@@ -25,11 +25,12 @@ public class AppController {
       private CargoService service;
 
       @RequestMapping(path = "/")
-      public String viewHomePage(Model model, @Param("keyword") String keyword) {
-          List<Cargo> listCargo = service.listAll(keyword);
+      public String viewHomePage(Model model, @Param("keyword") String keyword,
+          @Param("sorting") String sorting) {
+          List<Cargo> listCargo = service.listAll(keyword, sorting);
           model.addAttribute("listCargo", listCargo);
           model.addAttribute("keyword", keyword);
-          model.addAttribute("count", service.getCount());
+          model.addAttribute("count", service.getCount(keyword));
           return "main";
       }
 
@@ -62,7 +63,9 @@ public class AppController {
 
       @RequestMapping(value = "/chart", method=RequestMethod.GET, produces="text/plain")
       @ResponseBody
-      public String getChart() {
+      public String getChart(@Param("keyword") String keyword, @Param("sorting") String sorting) {
+        System.out.println(keyword);
+        System.out.println(sorting);
         List<String> listDates = service.getDate();
         List<String> listDelDates = service.getDelDate();
         Map<String, Integer> dict = new HashMap <String, Integer> ();

@@ -11,11 +11,24 @@ public class CargoService {
   @Autowired
   private CargoRepository repo;
 
-  public List<Cargo> listAll(String keyword){
-      if (keyword != null){
+  public List<Cargo> listAll(String keyword, String sorting){
+    if (keyword != null && sorting != null) {
+          return repo.getOrdered(keyword);
+    }
+    else if (keyword != null && sorting == null){
           return repo.search(keyword);
       }
+    else if (keyword == null && sorting != null){
+          return repo.getAllOrdered(); 
+    }
       return repo.findAll();
+  }
+
+  public List<Cargo> listSorted(String keyword){
+      if (keyword != null){
+          return repo.getOrdered(keyword);
+      }
+      return repo.getAllOrdered();
   }
 
   public void save(Cargo cargo) {
@@ -34,11 +47,15 @@ public class CargoService {
     return repo.getDate();
   }
 
-  public long getCount(){
-    return repo.getCount();
+  public long getCount(String keyword){
+      if (keyword != null){
+          return repo.getCount(keyword);
+      }
+    return repo.getAllCount();
   }
 
   public List<String> getDelDate(){
     return repo.getDelDate();
   }
+
 }

@@ -1,6 +1,9 @@
 document.getElementById('chartElem').onclick = function() { 
+let sortParam = document.getElementById('sorting').checked ? '&sorting=on' : ''
+let searchBarVal = document.getElementById('keyword').value
+let searchKey=  searchBarVal ? `${searchBarVal}` : ''
 let ourRequest = new XMLHttpRequest();
-ourRequest.open('GET', 'http://localhost:8080/chart')
+ourRequest.open('GET', `http://localhost:8080/chart?keyword=${searchKey}${sortParam}`)
 ourRequest.onload = function() {
 let ourData = JSON.parse(ourRequest.responseText);
 let dates = []
