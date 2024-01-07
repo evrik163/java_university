@@ -1,0 +1,25 @@
+CREATE TABLE posts (
+    id bigint AUTO_INCREMENT PRIMARY KEY,
+    topic varchar(255),
+    post_text varchar(255)
+);
+
+CREATE TABLE user_posts_reader (
+    user_id bigint,
+    post_id bigint,
+    FOREIGN KEY (user_id) REFERENCES posts(id),
+    FOREIGN KEY (post_id) REFERENCES posts(id)
+);
+
+CREATE TABLE user_posts_owner (
+    user_id bigint,
+    post_id bigint,
+    FOREIGN KEY (user_id) REFERENCES posts(id),
+    FOREIGN KEY (post_id) REFERENCES posts(id)
+);
+
+CREATE TABLE users (
+    id bigint AUTO_INCREMENT PRIMARY KEY,
+    user varchar(255),
+    password varchar(255)
+);
