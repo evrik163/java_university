@@ -9,7 +9,11 @@ public class UsersService {
     @Autowired
     private UsersRepository usersRepository;
 
-    public Users registerUser(Users user) {
+    public Users registerUser(Users user) throws Exception {
+        Users existingUser = usersRepository.findByUsername(user.getUsername());
+        if (existingUser != null) {
+            throw new Exception("Пользователь с таким логином уже существует");
+        }
         user.setPassword(PasswordHashing.hashPassword(user.getPassword()));
         return usersRepository.save(user);
     }
@@ -19,4 +23,5 @@ public class UsersService {
         return user != null && PasswordHashing.verifyPassword(password, user.getPassword());
     }
 }
+
 

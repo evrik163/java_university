@@ -26,3 +26,4 @@ public class PasswordHashing {
         return newHashedPassword.equals(hashedPassword);
     }
 }
+
