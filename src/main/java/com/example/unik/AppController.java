@@ -1,88 +1,102 @@
 package com.example.unik;
 
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.sql.Date;
-
 import com.google.gson.Gson;
-import org.springframework.web.bind.annotation.ResponseBody;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class AppController {
 
-      @Autowired
-      private CargoService service;
+    @Autowired
+    private CargoService service;
 
-      @RequestMapping(path = "/")
-      public String viewHomePage(Model model, @Param("keyword") String keyword,
-          @Param("sorting") String sorting) {
-          List<Cargo> listCargo = service.listAll(keyword, sorting);
-          model.addAttribute("listCargo", listCargo);
-          model.addAttribute("keyword", keyword);
-          model.addAttribute("count", service.getCount(keyword));
-          return "main";
-      }
+    private boolean isAuthenticated(HttpServletRequest request) {
+        return request.getSession().getAttribute("user") != null;
+    }
 
-      @RequestMapping(path = "/new")
-      public String showNewCargoForm(Model model){
-            Cargo cargo = new Cargo();
-            model.addAttribute("cargo", cargo);
-            return "new_cargo";
-      }
+    @RequestMapping(path = "/")
+    public String viewHomePage(Model model, @Param("keyword") String keyword,
+                               @Param("sorting") String sorting, HttpServletRequest request) {
+        if (!isAuthenticated(request)) {
+            return "redirect:/auth";
+        }
 
-      @RequestMapping(value = "/save", method=RequestMethod.POST)
-      public String saveCargo(@ModelAttribute("cargo") Cargo cargo){
+        List<Cargo> listCargo = service.listAll(keyword, sorting);
+        model.addAttribute("listCargo", listCargo);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("count", service.getCount(keyword));
+        return "main";
+    }
+
+    @RequestMapping(path = "/new")
+    public String showNewCargoForm(Model model, HttpServletRequest request) {
+        if (!isAuthenticated(request)) {
+            return "redirect:/auth";
+        }
+
+        Cargo cargo = new Cargo();
+        model.addAttribute("cargo", cargo);
+        return "new_cargo";
+    }
+
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public String saveCargo(@ModelAttribute("cargo") Cargo cargo, HttpServletRequest request) {
+        if (!isAuthenticated(request)) {
+            return "redirect:/auth";
+        }
+
         service.save(cargo);
         return "redirect:/";
-      }
+    }
 
-      @RequestMapping("/edit/{id}")
-      public ModelAndView showEditCargoForm(@PathVariable(name="id") Long id) {
-       ModelAndView nav = new ModelAndView("edit_cargo");
-       Cargo cargo = service.get(id);
-       nav.addObject("cargo", cargo);
-       return nav;
-      }
+    @RequestMapping("/edit/{id}")
+    public ModelAndView showEditCargoForm(@PathVariable(name = "id") Long id, HttpServletRequest request) {
+        if (!isAuthenticated(request)) {
+            return new ModelAndView("redirect:/auth");
+        }
 
-      @RequestMapping("/delete/{id}")
-      public String deleteCargo(@PathVariable(name="id") Long id) {
-      service.delete(id);
-      return "redirect:/";
-      }
+        ModelAndView mav = new ModelAndView("edit_cargo");
+        Cargo cargo = service.get(id);
+        mav.addObject("cargo", cargo);
+        return mav;
+    }
 
-      @RequestMapping(value = "/chart", method=RequestMethod.GET, produces="text/plain")
-      @ResponseBody
-      public String getChart(@Param("keyword") String keyword) {
-        System.out.println(keyword);
+    @RequestMapping("/delete/{id}")
+    public String deleteCargo(@PathVariable(name = "id") Long id, HttpServletRequest request) {
+        if (!isAuthenticated(request)) {
+            return "redirect:/auth";
+        }
+
+        service.delete(id);
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/chart", method = RequestMethod.GET, produces = "text/plain")
+    @ResponseBody
+    public String getChart(@Param("keyword") String keyword, HttpServletRequest request) {
+        if (!isAuthenticated(request)) {
+            return "Access Denied";
+        }
+
         List<String> listDates = service.getDate(keyword);
         List<String> listDelDates = service.getDelDate(keyword);
-        Map<String, Integer> dict = new HashMap <String, Integer> ();
+        Map<String, Integer> dict = new HashMap<>();
 
-        for (int i = 0; i < listDates.size(); i++){
-          String val = listDates.get(i) + "/" + listDelDates.get(i);
-          boolean containsKey = dict.containsKey(val);
-          if (containsKey){
-            dict.put(val, dict.get(val) + 1);
-             }
-          else {
-            dict.put(val, 1);
-            }
-          }
+        for (int i = 0; i < listDates.size(); i++) {
+            String val = listDates.get(i) + "/" + listDelDates.get(i);
+            dict.put(val, dict.getOrDefault(val, 0) + 1);
+        }
 
-        Gson gson = new Gson(); 
-        String json = gson.toJson(dict);
+        return new Gson().toJson(dict);
+    }
+}
 
-        return json;
-      }
-  }
