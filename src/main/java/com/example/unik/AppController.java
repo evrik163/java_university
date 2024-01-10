@@ -19,6 +19,9 @@ public class AppController {
     @Autowired
     private CargoService service;
 
+    @Autowired
+    private PostsService posts_service;
+
     private boolean isAuthenticated(HttpServletRequest request) {
         return request.getSession().getAttribute("user") != null;
     }
@@ -98,5 +101,12 @@ public class AppController {
 
         return new Gson().toJson(dict);
     }
-}
 
+    @RequestMapping(path = "/posts")
+    public String viewPostsPage(Model model, @Param("keyword") String keyword) {
+        List<HashMap<String, String>> listPosts = posts_service.get_by_name(keyword);
+        model.addAttribute("listPosts", listPosts);
+        model.addAttribute("keyword", keyword);
+        return "posts";
+    }
+  }
