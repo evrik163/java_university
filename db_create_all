@@ -1,7 +1,7 @@
 CREATE TABLE unik.posts (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     topic varchar(255),
-    post_text varchar(255)
+    post_text varchar(5000)
 );
 
 CREATE TABLE unik.user_posts_reader (
@@ -21,5 +21,6 @@ CREATE TABLE unik.user_posts_owner (
 CREATE TABLE unik.users (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     user varchar(255),
-    password varchar(255)
+    password varchar(255),
+    role varchar(255)
 );

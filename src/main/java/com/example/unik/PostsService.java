@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,11 +41,7 @@ public class PostsService {
 
     }
 
-    public Posts get_by_id(Long id) {
-        return repo.findById(id).get();
-    }
-
-    public void save(Posts post) {
+    public void save(Posts post, String user_id) {
         repo.save(post);
     }
 

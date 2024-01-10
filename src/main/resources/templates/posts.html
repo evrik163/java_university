@@ -16,7 +16,7 @@
         <button type="submit" class="btn btn-outline-primary">Найти</button>
         <div style="margin-left: 200px;">
         </div>
-        <a th:href="@{'posts/new'}">
+        <a th:href="@{'new_post'}">
           <button type="button" class="btn btn-primary">Добавить статью</button>
         </a>
     </form>
@@ -37,8 +37,8 @@
       <th scope="row" th:text="${post.get('authors')}">Название статьи не найдено</th>
       <td>
         <div style="word-spacing: 10px;">
-          <a style="text-decoration: none;" th:href="@{'posts/edit/' +${post.id}}"<a>Редактировать</a>
-          <a style="text-decoration: none;" th:href="@{'posts/delete/' +${post.id}}"<a>Удалить</a>
+          <a style="text-decoration: none;" th:href="@{'edit_post/' +${post.id}}"<a>Редактировать</a>
+          <a style="text-decoration: none;" th:href="@{'delete_post/' +${post.id}}"<a>Удалить</a>
         </div>
       </td>
     </tr>

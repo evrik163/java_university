@@ -16,11 +16,14 @@ import java.util.Map;
 @Controller
 public class AppController {
 
-    @Autowired
-    private CargoService service;
+      @Autowired
+      private CargoService service;
+
+      @Autowired
+      private PostsService posts_service;
 
     @Autowired
-    private PostsService posts_service;
+    private UsersService users_service;
 
     private boolean isAuthenticated(HttpServletRequest request) {
         return request.getSession().getAttribute("user") != null;
@@ -39,6 +42,14 @@ public class AppController {
         model.addAttribute("count", service.getCount(keyword));
         return "main";
     }
+
+      @RequestMapping(path = "/")
+      public String viewHomePage(Model model, @Param("keyword") String keyword) {
+          List<Cargo> listCargo = service.listAll(keyword);
+          model.addAttribute("listCargo", listCargo);
+          model.addAttribute("keyword", keyword);
+          return "main";
+      }
 
     @RequestMapping(path = "/new")
     public String showNewCargoForm(Model model, HttpServletRequest request) {
@@ -108,5 +119,19 @@ public class AppController {
         model.addAttribute("listPosts", listPosts);
         model.addAttribute("keyword", keyword);
         return "posts";
+    }
+
+    @RequestMapping(path = "/new_post")
+    public String showNewPostForm(Model model){
+        Posts posts = new Posts();
+        model.addAttribute("posts", posts);
+        return "new_post";
+    }
+
+    @RequestMapping(value = "/save_post", method=RequestMethod.POST)
+    public String savePosts(@ModelAttribute("posts") Posts posts){
+        String username = users_service.getCurrentUser();
+        posts_service.save(posts, username);
+        return "redirect:/posts";
     }
   }

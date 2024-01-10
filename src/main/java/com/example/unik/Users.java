@@ -41,6 +41,10 @@ public class Users {
         this.Password = password;
     }
 
+    @Setter
+    @Column(name="role")
+    private String Role;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_posts_reader",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
