@@ -1,42 +1,45 @@
 package com.example.unik;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
 @Entity
 public class Users {
-
     @Id
+    @Setter
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @Column(name="username", unique = true, nullable = false)
     private String username;
 
+    @Setter
     @Column(name="password", nullable = false)
     private String password;
 
-    public Long getId() {
-        return id;
+    @Setter
+    @Column(name="role", nullable = false)
+    private String role;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_posts_reader",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
+    private Set<Posts> read_posts = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_posts_owner",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
+    private Set<Posts> own_posts = new HashSet<>();
+
+    protected Users(){
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
-

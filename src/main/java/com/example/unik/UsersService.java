@@ -1,5 +1,6 @@
 package com.example.unik;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,21 +8,28 @@ import org.springframework.stereotype.Service;
 public class UsersService {
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UsersRepository repo;
 
-    public Users registerUser(Users user) throws Exception {
-        Users existingUser = usersRepository.findByUsername(user.getUsername());
+    public void registerUser(Users user) throws Exception {
+        Users existingUser = repo.findByUsername(user.getUsername());
         if (existingUser != null) {
             throw new Exception("Пользователь с таким логином уже существует");
         }
         user.setPassword(PasswordHashing.hashPassword(user.getPassword()));
-        return usersRepository.save(user);
+        user.setRole("Viewer");
+        repo.save(user);
     }
 
     public boolean authenticate(String username, String password) {
-        Users user = usersRepository.findByUsername(username);
+        Users user = repo.findByUsername(username);
         return user != null && PasswordHashing.verifyPassword(password, user.getPassword());
     }
+
+    public Users get_current_user(HttpServletRequest request) {
+        Users current_user = (Users) request.getSession().getAttribute("user");
+        return repo.findByUsername(current_user.getUsername());
+    }
+
 }
 
 

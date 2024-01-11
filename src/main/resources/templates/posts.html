@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>
+      Посты
+    </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+  </head>
+  <body>
+  <div th:insert="~{navbar :: copy}"></div>
+
+  <div class="container vh-100 d-flex justify-content-start flex-column">
+    <form th:action="@{/posts}">
+      <div class="input-group my-5">
+        <input name="keyword" id="keyword" type="search" class="form-control rounded" placeholder="Введите название статьи" aria-label="Search" aria-describedby="search-addon"  th:value"{keyword}" required/>
+        <button type="submit" class="btn btn-outline-primary">Найти</button>
+        <div style="margin-left: 200px;">
+        </div>
+        <a th:href="@{'new_post'}">
+          <button th:if="${user.role} != 'Viewer'" type="button" class="btn btn-primary">Добавить статью</button>
+        </a>
+    </form>
+  </div>
+
+  <table class="table table-borderless">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Статья</th>
+      <th scope="col">Авторы</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post: ${listPosts}">
+      <th scope="row" th:text="${post.get('id')}"></th>
+      <th scope="row" ><a th:href="@{'post/' +${post.get('id')}}" th:text="${post.get('topic')}"/></th>
+      <th scope="row" th:text="${post.get('authors')}"></th>
+      <td>
+        <div style="word-spacing: 10px;">
+          <a style="text-decoration: none;" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'" th:href="@{'edit_post/' +${post.id}}"<a>Редактировать</a>
+          <a style="text-decoration: none;" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'" th:href="@{'delete_post/' +${post.id}}"<a>Удалить</a>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  </div>
+  </body>
+</html>
