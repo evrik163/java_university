@@ -27,18 +27,6 @@ public class Users {
     @Column(name="role", nullable = false)
     private String role;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_posts_reader",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
-    private Set<Posts> read_posts = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_posts_owner",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
-    private Set<Posts> own_posts = new HashSet<>();
-
     protected Users(){
     }
 

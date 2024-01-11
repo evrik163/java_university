@@ -33,7 +33,7 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 data: JSON.stringify({ username: username, password: password }),
                 success: function(response) {
-                    window.location.href = '/';
+                    window.location.href = '/posts';
                 },
                 error: function(response) {
                     $('#error-message').text('Неверные учетные данные').show();
