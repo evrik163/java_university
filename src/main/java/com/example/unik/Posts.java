@@ -16,11 +16,11 @@ public class Posts {
 
     @Setter
     @Column(name="topic")
-    private String Topic;
+    private String topic;
 
     @Setter
     @Column(name="post_text")
-    private String PostText;
+    private String post_text;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_posts_reader",

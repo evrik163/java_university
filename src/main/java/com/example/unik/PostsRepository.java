@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PostsRepository extends JpaRepository<Posts, Long> {
-  @Query("SELECT p FROM Posts p WHERE p.Topic LIKE %?1%") List<Posts> search_by_name(String keyword);
+  @Query("SELECT p FROM Posts p WHERE p.topic LIKE %?1%") List<Posts> search_by_name(String keyword);
 
 }

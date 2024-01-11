@@ -1,10 +1,9 @@
 package com.example.unik;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import jakarta.transaction.Transactional;
+import org.antlr.v4.runtime.atn.SemanticContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PostsService {
+
     @Autowired
     private PostsRepository repo;
 
@@ -41,11 +41,23 @@ public class PostsService {
 
     }
 
-    public void save(Posts post, String user_id) {
+    public void save(Posts post, Users user) {
+        post.getOwners().add(user);
         repo.save(post);
+
     }
 
     public void delete(Long id) {
         repo.deleteById(id);
+    }
+
+    public boolean check_owner_access(Posts post, Users user) {
+        if (
+            user.getRole() != "Viewer" && post.getOwners().contains(user) ||
+            user.getRole() == "Admin")
+        {
+            return true;
+        }
+        return false;
     }
 }

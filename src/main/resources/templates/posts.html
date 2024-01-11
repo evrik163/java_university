@@ -17,7 +17,7 @@
         <div style="margin-left: 200px;">
         </div>
         <a th:href="@{'new_post'}">
-          <button type="button" class="btn btn-primary">Добавить статью</button>
+          <button th:if="${user.role} != 'Viewer'" type="button" class="btn btn-primary">Добавить статью</button>
         </a>
     </form>
   </div>
@@ -26,19 +26,19 @@
     <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Название статьи</th>
+      <th scope="col">Статья</th>
       <th scope="col">Авторы</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="post: ${listPosts}">
-      <th scope="row" th:text="${post.get('id')}">ID поста не найдено</th>
-      <th scope="row" th:text="${post.get('topic')}">Название статьи не найдено</th>
-      <th scope="row" th:text="${post.get('authors')}">Название статьи не найдено</th>
+      <th scope="row" th:text="${post.get('id')}"></th>
+      <th scope="row" ><a th:href="@{'post/' +${post.get('id')}}" th:text="${post.get('topic')}"/></th>
+      <th scope="row" th:text="${post.get('authors')}"></th>
       <td>
         <div style="word-spacing: 10px;">
-          <a style="text-decoration: none;" th:href="@{'edit_post/' +${post.id}}"<a>Редактировать</a>
-          <a style="text-decoration: none;" th:href="@{'delete_post/' +${post.id}}"<a>Удалить</a>
+          <a style="text-decoration: none;" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'" th:href="@{'edit_post/' +${post.id}}"<a>Редактировать</a>
+          <a style="text-decoration: none;" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'" th:href="@{'delete_post/' +${post.id}}"<a>Удалить</a>
         </div>
       </td>
     </tr>
