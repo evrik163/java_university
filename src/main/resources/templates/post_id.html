@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>
+        Пост
+    </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:insert="~{navbar :: copy}"></div>
+<div class="container vh-100 pt-5 d-flex justify-content-start flex-column">
+    <div class="row">
+        <div class="col-8">
+            <h1><a th:text="${post.get('topic')}"></a></h1>
+            <p><a th:text="${post.get('post_text')}"></a></p>
+        </div>
+        <div class="col-4">
+            <h3>Авторы</h3>
+            <div class="list-group-item"th:text="${post.get('authors')}"></div>
+            <div class="input-group mt-2">
+                <a class="me-2" th:href="@{'post_edit_'+${post.get('id')}}">
+                    <button type="button" class="btn btn-primary" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'">Редактировать</button>
+                </a>
+                <a th:href="@{'post_'+${post.get('id')}+'/delete'}">
+                    <button type="button" class="btn btn-primary" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'">Удалить</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

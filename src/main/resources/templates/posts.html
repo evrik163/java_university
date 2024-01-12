@@ -16,8 +16,11 @@
         <button type="submit" class="btn btn-outline-primary">Найти</button>
         <div style="margin-left: 200px;">
         </div>
-        <a th:href="@{'new_post'}">
+        <a class="me-3" th:href="@{'new_post'}">
           <button th:if="${user.role} != 'Viewer'" type="button" class="btn btn-primary">Добавить статью</button>
+        </a>
+        <a th:href="@{'admin_page'}">
+          <button th:if="${user.role} == 'Admin'" type="button" class="btn btn-primary">Редактор пользователей</button>
         </a>
     </form>
   </div>
@@ -32,13 +35,13 @@
     </thead>
     <tbody>
     <tr th:each="post: ${listPosts}">
-      <th scope="row" th:text="${post.get('id')}"></th>
-      <th scope="row" ><a th:href="@{'post/' +${post.get('id')}}" th:text="${post.get('topic')}"/></th>
+      <th scope="row" th:text="${post.get('number')}"></th>
+      <th scope="row" ><a th:href="@{'post_' +${post.get('id')}}" th:text="${post.get('topic')}"/></th>
       <th scope="row" th:text="${post.get('authors')}"></th>
       <td>
         <div style="word-spacing: 10px;">
-          <a style="text-decoration: none;" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'" th:href="@{'edit_post/' +${post.id}}"<a>Редактировать</a>
-          <a style="text-decoration: none;" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'" th:href="@{'delete_post/' +${post.id}}"<a>Удалить</a>
+          <a style="text-decoration: none;" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'" th:href="@{'post_edit_' +${post.id}}"<a>Редактировать</a>
+          <a style="text-decoration: none;" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'" th:href="@{'post_' +${post.id}+ '/delete'}"<a>Удалить</a>
         </div>
       </td>
     </tr>

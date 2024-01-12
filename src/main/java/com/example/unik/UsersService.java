@@ -4,6 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UsersService {
 
@@ -28,6 +31,12 @@ public class UsersService {
     public Users get_current_user(HttpServletRequest request) {
         Users current_user = (Users) request.getSession().getAttribute("user");
         return repo.findByUsername(current_user.getUsername());
+    }
+
+    public List<String> get_all_users() {
+        List<String> userNames = new ArrayList<>();
+        repo.findAll().forEach(user -> userNames.add(user.getUsername()));
+        return userNames;
     }
 
 }

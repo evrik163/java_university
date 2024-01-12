@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <style>
+        .selected::before {
+            content: '+ ';
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="container">
+        <h1>Редактирование поста</h1>
+
+        <form class="class="form-container vh-100 d-flex flex-column"">
+            <div class="form-group mb-3">
+                <label for="topic" class="form-label">Название статьи:</label>
+                <input type="text" class="form-control" id="topic" th:value="${post.get('topic')}">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="postText" class="form-label">Текст:</label>
+                <textarea class="form-control" id="postText" rows="3" th:text="${post.get('post_text')}"></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="authors" class="form-label">Авторы:</label>
+                <select multiple class="form-control" id="authors">
+                    <option th:each="author: ${authors}" th:text="${author}" th:selected="${#strings.contains(post.get('authors'), author)}">></option>
+                </select>
+            </div>
+        </form>
+    <a th:href="@{'post_'+${post.get('id')}}">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#authors option').mousedown(function(e) {
+            e.preventDefault();
+            $(this).toggleClass('selected');
+            $(this).prop('selected', !$(this).prop('selected'));
+        });
+    });
+</script>
+<script>
+    $(window).on('load', function() {
+        $('#authors option:selected').addClass('selected');
+    });
+</script>
+</body>
+</html>
