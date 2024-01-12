@@ -11,14 +11,19 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 data: JSON.stringify({ username: username, password: password }),
                 success: function(response) {
-                    alert('Регистрация прошла успешно');
+                    $('#success-message').text('Регистрация прошла успешно').show();
+                    $('#username').val('');
+                    $('#password').val('');
+                    $('#error-message').hide()
                 },
                 error: function(response) {
                     $('#error-message').text(response.responseText).show();
+                    $('#success-message').hide();
                 }
             });
         } else {
             $('#error-message').text('Все поля обязательны к заполнению').show();
+            $('#success-message').hide();
         }
     });
 
@@ -37,10 +42,12 @@ $(document).ready(function() {
                 },
                 error: function(response) {
                     $('#error-message').text('Неверные учетные данные').show();
+                    $('#success-message').hide();
                 }
             });
         } else {
             $('#error-message').text('Все поля обязательны к заполнению').show();
+            $('#success-message').hide();
         }
     });
 });
