@@ -1,6 +1,7 @@
 package com.example.unik;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,11 @@ public class UsersController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверные учетные данные");
         }
+    }
+    @GetMapping("/logout")
+    public String logoutUser(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "redirect:/";
     }
     @GetMapping
     public String showAuthPage() {

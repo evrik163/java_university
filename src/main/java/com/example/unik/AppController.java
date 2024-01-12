@@ -4,10 +4,6 @@ import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -71,10 +67,6 @@ public class AppController {
     @RequestMapping(value = "/chart", method = RequestMethod.GET, produces = "text/plain")
     @ResponseBody
     public String getChart(@Param("keyword") String keyword, HttpServletRequest request) {
-        if (isAuthenticated(request)) {
-            return "Access Denied";
-        }
-
         List<String> listDates = service.getDate(keyword);
         List<String> listDelDates = service.getDelDate(keyword);
         Map<String, Integer> dict = new HashMap<>();
