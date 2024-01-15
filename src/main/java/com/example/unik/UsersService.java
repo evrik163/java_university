@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UsersService {
@@ -33,12 +35,24 @@ public class UsersService {
         return repo.findByUsername(current_user.getUsername());
     }
 
+    public Users get_by_name(String username) {
+        return repo.findByUsername(username);
+    }
+
     public List<String> get_all_users() {
         List<String> userNames = new ArrayList<>();
         repo.findAll().forEach(user -> userNames.add(user.getUsername()));
         return userNames;
     }
 
+    public List<Users> get_all_users_class() {
+        return repo.findAll();
+    }
+
+    public void update_role(Users user, String role) {
+        user.setRole(role);
+        repo.save(user);
+    }
 }
 
 

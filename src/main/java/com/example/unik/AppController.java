@@ -1,6 +1,6 @@
 package com.example.unik;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -112,19 +112,54 @@ public class AppController {
         }
 
         Posts posts = new Posts();
+        String current_user = users_service.get_current_user(request).getUsername();
+        List<String> authors = users_service.get_all_users();
+        authors.remove(current_user);
         model.addAttribute("posts", posts);
+        model.addAttribute("authors", authors);
         return "new_post";
     }
 
     @RequestMapping(value = "/save_post", method=RequestMethod.POST)
-    public Object savePosts(@ModelAttribute("posts") Posts posts, HttpServletRequest request){
+    public Object savePosts(
+            @RequestBody String json_string,
+            HttpServletRequest request
+    ){
         if (isAuthenticated(request)) {
-            return "redirect:/auth";
+            return "Access Denied";
         }
         if (Objects.equals(users_service.get_current_user(request).getRole(), "Viewer")) {
-            return "redirect:/posts";
+            return "Access Denied";
         }
-        posts_service.save(posts, users_service.get_current_user(request));
+        JsonObject json_body = JsonParser.parseString(json_string).getAsJsonObject();
+        String postText = json_body.get("postText").getAsString();
+        String topic = json_body.get("topic").getAsString();
+        JsonArray authors = json_body.get("users").getAsJsonArray();
+        List<String> usernames = new ArrayList<>();
+        for (JsonElement authorElement : authors) {
+            usernames.add(authorElement.getAsString());
+        }
+        Posts new_post = new Posts();
+        new_post.setPost_text(postText);
+        new_post.setTopic(topic);
+        List<Users> users = new ArrayList<>();
+        for (int i = 0; i < usernames.size(); i++) {
+            users.add(users_service.get_by_name(usernames.get(i)));
+        }
+        String[] uri = request.getHeader("Referer").split("/");
+        String endpoint = uri[uri.length-1];
+        if (Objects.equals(endpoint, "new_post")) {
+            users.add(users_service.get_current_user(request));
+            posts_service.save(new_post, users);
+        }
+        else {
+            String[] post_uri = endpoint.split("_");
+            String post_id = post_uri[post_uri.length-1];
+            Posts post = posts_service.get_by_id(Long.parseLong(post_id));
+            post.setPost_text(postText);
+            post.setTopic(topic);
+            posts_service.save(post, users);
+        }
         return "redirect:/posts";
     }
 
@@ -140,11 +175,12 @@ public class AppController {
         return "post_id";
     }
 
-    @RequestMapping(value = "post_edit_{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/post_edit_{id}", method = RequestMethod.GET)
     public String showEditPostForm(
             @PathVariable(name = "id") Long id,
             Model model,
-            HttpServletRequest request) {
+            HttpServletRequest request
+    ) {
         if (isAuthenticated(request)) {
             return "redirect:/auth";
         }
@@ -154,17 +190,17 @@ public class AppController {
             return "redirect:/posts";
         }
         HashMap<String, String> post = posts_service.get_dict_by_id(id);
-        List<String> authors = users_service.get_all_users();
+        List<String> users = users_service.get_all_users();
         model.addAttribute("post", post);
-        model.addAttribute("authors", authors);
+        model.addAttribute("users", users);
         return "post_edit";
     }
 
-    @RequestMapping(value = "post_edit_{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/post_edit_{id}", method = RequestMethod.POST)
     public String editPost(
             @PathVariable(name = "id") Long id,
-            Model model,
-            HttpServletRequest request) {
+            HttpServletRequest request
+    ) {
         if (isAuthenticated(request)) {
             return "redirect:/auth";
         }
@@ -191,4 +227,34 @@ public class AppController {
         return "redirect:/posts";
     }
 
+    @RequestMapping("admin_panel")
+    public String adminPanel(HttpServletRequest request, Model model) {
+        if (isAuthenticated(request)) {
+            return "redirect:/auth";
+        }
+        if (Objects.equals(users_service.get_current_user(request).getRole(), "Admin")) {
+            model.addAttribute("users", users_service.get_all_users_class());
+            return "admin_panel";
+        }
+        return "redirect:/posts";
+    }
+
+    @RequestMapping(value = "/save_roles", method=RequestMethod.POST)
+    public Object saveRoles(
+            @RequestBody String json_string,
+            HttpServletRequest request
+    ) {
+        if (isAuthenticated(request)) {
+            return "Access Denied";
+        }
+        if (!Objects.equals(users_service.get_current_user(request).getRole(), "Admin")) {
+            return "Access Denied";
+        }
+        JsonObject json_body = JsonParser.parseString(json_string).getAsJsonObject();
+        for (String username : json_body.keySet()) {
+            String role = json_body.get(username).getAsString();
+            users_service.update_role(users_service.get_by_name(username), role);
+        }
+        return "redirect:/posts";
+    }
 }
