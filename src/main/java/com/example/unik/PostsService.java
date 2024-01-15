@@ -60,8 +60,13 @@ public class PostsService {
 
     }
 
-    public void save(Posts post, Users user) {
-        post.getOwners().add(user);
+    public void save(Posts post, List<Users> users) {
+        if (!users.isEmpty()) {
+            post.getOwners().clear();
+            for (int i = 0; i < users.size(); i++) {
+                post.getOwners().add(users.get(i));
+            }
+        }
         repo.save(post);
 
     }
