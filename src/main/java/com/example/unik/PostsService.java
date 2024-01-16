@@ -1,5 +1,7 @@
 package com.example.unik;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ public class PostsService {
             String postId = post.getId().toString();
             String postTopic = post.getTopic();
             String postText = post.getPost_text();
+            String postCreatedDt = post.getCreated_dt().toString();
             List<String> authors = new ArrayList<>();
             List<Users> owners = new ArrayList<>();
             owners.addAll(post.getOwners());
@@ -34,6 +37,7 @@ public class PostsService {
             newPost.put("topic", postTopic);
             newPost.put("post_text", postText);
             newPost.put("authors", String.join(", ", authors));
+            newPost.put("created_dt", postCreatedDt);
             newListPosts.add(newPost);
         }
         return newListPosts;
@@ -46,6 +50,7 @@ public class PostsService {
         String postId = post.get().getId().toString();
         String postTopic = post.get().getTopic();
         String postText = post.get().getPost_text();
+        String postCreatedDt = post.get().getCreated_dt().toString();
         List<String> authors = new ArrayList<>();
         List<Users> owners = new ArrayList<>();
         owners.addAll(post.get().getOwners());
@@ -56,6 +61,7 @@ public class PostsService {
         newPost.put("topic", postTopic);
         newPost.put("post_text", postText);
         newPost.put("authors", String.join(", ", authors));
+        newPost.put("created_dt", postCreatedDt);
         return newPost;
 
     }
@@ -87,5 +93,9 @@ public class PostsService {
             return true;
         }
         return false;
+    }
+
+    public static Date get_now_date() {
+        return Date.valueOf(LocalDate.now());
     }
 }

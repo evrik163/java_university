@@ -132,6 +132,7 @@ public class AppController {
             usernames.add(authorElement.getAsString());
         }
         Posts new_post = new Posts();
+        new_post.setCreated_dt(posts_service.get_now_date());
         new_post.setPost_text(postText);
         new_post.setTopic(topic);
         List<Users> users = new ArrayList<>();
