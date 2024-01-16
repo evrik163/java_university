@@ -31,6 +31,7 @@
       <th scope="col">#</th>
       <th scope="col">Статья</th>
       <th scope="col">Авторы</th>
+      <th scope="col">Дата публикации</th>
     </tr>
     </thead>
     <tbody>
@@ -38,6 +39,7 @@
       <th scope="row" th:text="${post.get('number')}"></th>
       <th scope="row" ><a th:href="@{'post_' +${post.get('id')}}" th:text="${post.get('topic')}"/></th>
       <th scope="row" th:text="${post.get('authors')}"></th>
+      <th scope="row" th:text="${post.get('created_dt')}"></th>
       <td>
         <div style="word-spacing: 10px;">
           <a style="text-decoration: none;" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'" th:href="@{'post_edit_' +${post.id}}"<a>Редактировать</a>

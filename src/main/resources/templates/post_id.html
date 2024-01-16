@@ -15,8 +15,8 @@
             <p><a th:text="${post.get('post_text')}"></a></p>
         </div>
         <div class="col-4">
-            <h3>Авторы</h3>
-            <div class="list-group-item"th:text="${post.get('authors')}"></div>
+            <div class="list-group-item"th:utext="'<b>Авторы: </b>' + ${post.get('authors')}"></div>
+            <div class="list-group-item"th:utext="'<b>Опубликовано: </b>' + ${post.get('created_dt')}"></div>
             <div class="input-group mt-2">
                 <a class="me-2" th:href="@{'post_edit_'+${post.get('id')}}">
                     <button type="button" class="btn btn-primary" th:if="${user.role} != 'Viewer' AND ${#strings.contains(post.get('authors'), user.username)} OR ${user.role} == 'Admin'">Редактировать</button>
