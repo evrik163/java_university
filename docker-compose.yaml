@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql:8.0
+    restart: always
+    hostname: db
+    environment:
+      MYSQL_DATABASE: unik
+      MYSQL_ROOT_PASSWORD: 123
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+
+  spring:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: springapp
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/unik
+    ports:
+     - "8080:8080"
+    depends_on:
+      - db
