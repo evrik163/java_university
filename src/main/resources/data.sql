@@ -1,3 +1,4 @@
+ALTER TABLE unik.posts MODIFY COLUMN post_text varchar(7000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL;
 INSERT INTO posts (id, topic, post_text, created_dt)
 VALUES (1, 'Flower', 'Flower - это веб-интерфейс и инструмент наблюдения для Celery, популярной системы распределенной обработки задач в Python. Он предоставляет пользовательский интерфейс для мониторинга и управления работой и производительностью Celery-кластера.
 С использованием Flower вы можете:
@@ -16,7 +17,8 @@ Flower обеспечивает удобный и интуитивно поня�
 INSERT INTO cargo (delivery_date, shipment_date, id, cargo_content, cargo_name, delivery_city, shipment_city)
 VALUES ('2024-02-26', '2022-01-26', 1, 'donats', 'cargoDonats', 'Moscow', 'Syzran'),
        ('2023-03-26', '2021-01-26', 2, 'slippers', 'cargoSlippers', 'Moscow', 'Minsk'),
-       ('2023-01-26', '2021-01-21', 3, 'knifes', 'cargoKnifes', 'Moscow', 'Novosibirsk')
+       ('2023-01-26', '2021-01-21', 3, 'knifes', 'cargoKnifes', 'Moscow', 'Novosibirsk'),
+       ('2023-01-26', '2021-01-21', 4, 'knifes', 'cargoKnifes2', 'Syzran', 'Samara')
 ;
 INSERT INTO users (id, password, role, username)
 VALUES (1, '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2', 'Admin', 'admin'),
