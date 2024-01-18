@@ -1,28 +1,34 @@
 <html>
-  <head>
-    <title>
-      Посты
-    </title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/bootstrap.min.js"></script>
-  </head>
-  <body>
-  <div th:insert="~{navbar :: copy}"></div>
+<head>
+  <title>Посты</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="js/bootstrap.min.js"></script>
+  <style>
+    .button-group a {
+      text-decoration: none;
+      color: inherit;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+<div th:insert="~{navbar :: copy}"></div>
 
-  <div class="container vh-100 d-flex justify-content-start flex-column">
-    <form th:action="@{/posts}">
-      <div class="input-group my-5">
-        <input name="keyword" id="keyword" type="search" class="form-control rounded" placeholder="Введите название статьи" aria-label="Search" aria-describedby="search-addon"  th:value"{keyword}" required/>
-        <button type="submit" class="btn btn-outline-primary">Найти</button>
-        <div style="margin-left: 200px;">
-        </div>
-        <a class="me-3" th:href="@{'new_post'}">
-          <button th:if="${user.role} != 'Viewer'" type="button" class="btn btn-primary">Добавить статью</button>
-        </a>
-        <a th:href="@{'admin_panel'}">
-          <button th:if="${user.role} == 'Admin'" type="button" class="btn btn-primary">Редактор пользователей</button>
-        </a>
-    </form>
+<div class="container vh-100 d-flex justify-content-start flex-column">
+  <form th:action="@{/posts}">
+    <div class="input-group mt-3">
+      <input name="keyword" id="keyword" type="search" class="form-control rounded" placeholder="Поиск" aria-label="Search" aria-describedby="search-addon" th:value="${keyword}" required/>
+      <button type="submit" class="btn btn-outline-primary">Найти</button>
+    </div>
+  </form>
+
+  <div class="button-group mt-1">
+    <a th:href="@{'new_post'}">
+      <button th:if="${user.role} != 'Viewer'" type="button" class="btn btn-primary">Добавить статью</button>
+    </a>
+    <a th:href="@{'admin_panel'}">
+      <button th:if="${user.role} == 'Admin'" type="button" class="btn btn-primary">Редактор пользователей</button>
+    </a>
   </div>
 
   <table class="table table-borderless">
